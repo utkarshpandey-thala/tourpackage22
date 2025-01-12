@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
-// const SeminarLog = require('../models/SeminarLog');
-// const SeminarPlan = require('../models/SeminarPlan');
 
-// GET all seminar logs
 router.get('/', async (req, res) => {
   try {
     const seminarLogs = await SeminarLog.find().populate('user').populate('plan');
@@ -13,7 +10,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET a specific seminar log by ID
 router.get('/:id', async (req, res) => {
   try {
     const seminarLog = await SeminarLog.findById(req.params.id).populate('user').populate('plan');
@@ -24,22 +20,17 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST a new seminar log (Booking)
 router.post('/', async (req, res) => {
   const seminarLogData = req.body;
-
-  // Check availability
+  
   try {
     const seminarPlan = await SeminarPlan.findById(seminarLogData.plan);
     if (seminarPlan.capacity - seminarPlan.sold < seminarLogData.seat) {
       return res.status(400).json({ message: 'Not enough seats available' });
     }
-
-    // Create and save seminar log
     const seminarLog = new SeminarLog(seminarLogData);
     const newSeminarLog = await seminarLog.save();
-
-    // Update the sold count in the SeminarPlan
+    
     seminarPlan.sold += seminarLogData.seat;
     await seminarPlan.save();
 
@@ -49,7 +40,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// DELETE a seminar log (Cancel Booking)
 router.delete('/:id', async (req, res) => {
   try {
     const seminarLog = await SeminarLog.findById(req.params.id);

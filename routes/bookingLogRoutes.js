@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const TourPackage = require('../models/TourPackage');
 const BookingLog = require('../models/BookingLog');
-// GET all bookings
 router.get('/', async (req, res) => {
   try {
     const bookings = await BookingLog.find().populate('user').populate('plan');
@@ -11,8 +10,6 @@ router.get('/', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
-// GET a specific booking by ID
 router.get('/:id', async (req, res) => {
   try {
     const booking = await BookingLog.findById(req.params.id).populate('user').populate('plan');
@@ -22,23 +19,15 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
-// POST a new booking
 router.post('/', async (req, res) => {
   const bookingData = req.body;
-
-  // Check availability
   try {
     const tourPackage = await TourPackage.findById(bookingData.plan);
     if (tourPackage.capacity - tourPackage.sold < bookingData.seat) {
       return res.status(400).json({ message: 'Not enough seats available' });
     }
-
-    // Create and save booking
     const booking = new BookingLog(bookingData);
     const newBooking = await booking.save();
-
-    // Update the sold count in the TourPackage
     tourPackage.sold += bookingData.seat;
     await tourPackage.save();
 
@@ -47,8 +36,6 @@ router.post('/', async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
-
-// DELETE a booking
 router.delete('/:id', async (req, res) => {
   try {
     const booking = await BookingLog.findById(req.params.id);

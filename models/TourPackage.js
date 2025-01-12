@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const tourPackageSchema = new mongoose.Schema({
   name: { type: String, required: true },
   location: { type: String, required: true },
-  duration: { type: String, required: true }, // Ensure 'duration' is defined as required
+  duration: { type: String, required: true }, 
   departure: { type: Date, required: true },
   return: { type: Date, required: true },
   capacity: { type: Number, required: true },

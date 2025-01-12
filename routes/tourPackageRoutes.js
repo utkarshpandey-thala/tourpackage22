@@ -2,8 +2,6 @@ const express = require('express');
 const { body, validationResult } = require('express-validator');
 const router = express.Router();
 const TourPackage = require('../models/TourPackage');
-
-// GET all packages
 router.get('/', async (req, res) => {
   try {
     const packages = await TourPackage.find();
@@ -13,12 +11,10 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET a specific package by ID
 router.get('/:id', getTourPackage, (req, res) => {
   res.json(res.tourPackage);
 });
 
-// POST a new package with validation
 router.post(
   '/',
   [
@@ -31,17 +27,17 @@ router.post(
     body('price').isFloat({ gt: 0 }).withMessage('Price must be a positive number')
   ],
   async (req, res) => {
-    // Check for validation errors
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    // Create a new Tour Package
+    
     const package = new TourPackage({
       name: req.body.name,
       location: req.body.location,
-      duration: req.body.duration,  // Added duration
+      duration: req.body.duration,  
       capacity: req.body.capacity,
       departure: req.body.departure,
       return: req.body.return,
@@ -57,7 +53,7 @@ router.post(
   }
 );
 
-// PUT to update a package by ID
+
 router.put('/:id', getTourPackage, async (req, res) => {
   Object.assign(res.tourPackage, req.body);
   try {
@@ -68,7 +64,7 @@ router.put('/:id', getTourPackage, async (req, res) => {
   }
 });
 
-// DELETE a package by ID
+
 router.delete('/:id', getTourPackage, async (req, res) => {
   try {
     await res.tourPackage.deleteOne();
@@ -78,7 +74,6 @@ router.delete('/:id', getTourPackage, async (req, res) => {
   }
 });
 
-// Middleware to get a TourPackage by ID
 async function getTourPackage(req, res, next) {
   let tourPackage;
   try {

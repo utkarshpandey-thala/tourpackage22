@@ -11,7 +11,6 @@ const seminarPlanRoutes = require('./routes/seminarPlanRoutes');
 const seminarLogRoutes = require('./routes/seminarLogRoutes'); 
 const categoryRoutes = require('./routes/categoryRoutes');
 const locationRoutes = require('./routes/locationRoutes');
-const advertisementRoutes = require('./routes/advertisement.routes');
 
 dotenv.config();
 
@@ -19,8 +18,6 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(cors());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve uploaded files
-app.use('/api', advertisementRoutes);
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -30,7 +27,6 @@ app.use('/api/seminar-plans', seminarPlanRoutes);
 app.use('/api/seminar-logs', seminarLogRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/locations', locationRoutes);
-app.use('/api', advertisementRoutes);
 
 mongoose.connect(process.env.DATABASE_URL)
   .then(() => {

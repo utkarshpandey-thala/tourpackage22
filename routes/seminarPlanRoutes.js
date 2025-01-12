@@ -1,8 +1,5 @@
 const express = require('express');
 const router = express.Router();
-// const SeminarPlan = require('../models/SeminarPlan');
-
-// GET all seminar plans
 router.get('/', async (req, res) => {
   try {
     const seminarPlans = await SeminarPlan.find();
@@ -12,7 +9,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET a specific seminar plan by ID
 router.get('/:id', async (req, res) => {
   try {
     const seminarPlan = await SeminarPlan.findById(req.params.id);
@@ -22,8 +18,6 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
-// POST a new seminar plan
 router.post('/', async (req, res) => {
   const seminarPlan = new SeminarPlan(req.body);
 
@@ -35,7 +29,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// PUT to update a seminar plan by ID
 router.put('/:id', async (req, res) => {
   try {
     const seminarPlan = await SeminarPlan.findById(req.params.id);
@@ -49,7 +42,6 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// DELETE a seminar plan by ID
 router.delete('/:id', async (req, res) => {
   try {
     const seminarPlan = await SeminarPlan.findById(req.params.id);

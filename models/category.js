@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
 const categorySchema = new mongoose.Schema({
-  serialNumber: { type: Number, required: false }, // Optional S.N., auto-generated if needed
-  name: { type: String, required: true }, // Name of the category
+  serialNumber: { type: Number, required: false }, 
+  name: { type: String, required: true }, 
   status: { 
     type: String, 
     enum: ["Active", "Inactive"], 
-    default: "Active" // Default status is "Active"
+    default: "Active" 
   },
 });
 
